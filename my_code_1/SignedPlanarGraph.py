@@ -625,7 +625,7 @@ class SignedPlanarGraph:
         self.create_nodes_from_faces(graph)
         self.create_edges_after_nodes()
         self.sign_sp()
-        # self.draw_sp_graph()
+        self.draw_sp_graph()
         self.draw_sp_graph_sign()
 
     def create_and_sign_sp(self):

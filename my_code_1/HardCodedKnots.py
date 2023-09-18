@@ -3,10 +3,8 @@ import pyknotid.representations as rep_
 
 class HardCodedKnots:
 
-    # code_numbers = [31, 311, 3111, 312, 3113, 41, 411, 4112, 412, 51, 513, 5131, 52, 522, 61, 62, 63,
-    #                 71, 72, 73, 74, 75, 76, 77]
-    code_numbers = [61, 62, 63, 71, 72, 73, 74, 75, 76, 77]
-
+    code_numbers = [31, 311, 3111, 312, 3113, 41, 411, 4112, 412, 51, 513, 5131, 52, 522, 61, 62, 63,
+                    71, 72, 73, 74, 75, 76, 77] #31123
 
 
     def __init__(self, code_no = None, code_string = None):
@@ -32,10 +30,11 @@ class HardCodedKnots:
             self.code_gauss = rep_.GaussCode("1+c,2-c,3+c,4+c,5+a,6-a,7-c,3-c,8-a,5-a,6+a,1-c,2+c,7+c,4-c,8+a")
             return
 
-        if (code_no == 31123 or code_string == "trefoil_twist_poke_slide" 
-                or code_string == "3_1_1_2_3"):
-                self.code_gauss = rep_.GaussCode("1+c,2-c,3-c,6a,7-a,8-c,6+a,9+c,2+c,0+c,0-c,4-c,5-a,1-c,8+c,7+a,9-c,3+c,4+c,5+a")
-                return
+        # problem with reducing reidemeister moves 
+        # if (code_no == 31123 or code_string == "trefoil_twist_poke_slide" 
+        #         or code_string == "3_1_1_2_3"):
+        #         self.code_gauss = rep_.GaussCode("1+c,2-c,3-c,6a,7-a,8-c,6+a,9+c,2+c,0+c,0-c,4-c,5-a,1-c,8+c,7+a,9-c,3+c,4+c,5+a")
+        #         return
 
         if code_no == 41 or code_string == "figure_eight" or code_string == "4_1":
             k = get_knot('4_1').space_curve()
