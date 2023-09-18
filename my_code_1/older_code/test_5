@@ -1,0 +1,21 @@
+from pyknotid.representations import GaussCode, Representation
+import my_helpers as help
+
+gc = GaussCode('1+a,2-a,3+a,1-a,2+a,3-a')
+gc.simplify() # does nothing here, as no Reidemeister moves can be
+              # performed to immediately simplify the curve
+
+# Representation is a generic topological representation providing
+# more methods
+rep = Representation(gc)
+#rep.determinant()  # 3
+k = rep.space_curve()  
+
+print(help.code_gauss_from_math_to_comp(k.gauss_code()))
+
+list = [ "11", "22", "33"]
+
+for ll in list:
+    ll = "88"
+
+print(list)

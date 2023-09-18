@@ -1,0 +1,36 @@
+'''
+Creating the Planar Graphs
+for the trefoil
+'''
+
+
+
+import pyknotid.representations as rep_
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+import sys
+import pyknotid.make as mk
+
+gc = rep_.GaussCode('1+a,2-a,3+a,1-a,2+a,3-a')
+
+
+rep = rep_.Representation(gc)
+
+k = rep.space_curve(bool=False)
+
+[graph, duplicates, heights, sorted]  = k.planar_diagram().as_networkx()
+
+pos = nx.planar_layout(graph)
+
+
+
+subax1 = plt.subplot(121)
+
+nx.draw(graph, with_labels=True, font_weight='bold')
+
+print(graph.edges())
+
+
+plt.show()
+

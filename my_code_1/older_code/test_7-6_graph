@@ -1,0 +1,179 @@
+'''
+Creating the knot 7_6.
+Refererence is https://math.berkeley.edu/~kmill/2019_8_25/gauss_dt_codes.html
+in Gauss Code section.
+'''
+
+import pyknotid.representations as rep_
+import numpy as np
+import sys
+import pyknotid.make as mk
+import networkx as nx
+import matplotlib.pyplot as plt
+import pygraphviz
+from networkx.drawing.nx_agraph import to_agraph 
+
+
+#import project.pynotid.my_code_1.my_helpers as help
+
+# for p in sys.path:
+#     print( p )
+
+
+def is_cyclic_list(l1, l2):
+    if len(l1) != len(l2):
+        return False
+    if  not l1:
+        return False
+    elem = l1[0]
+    for i in range(0,len(l1)):
+        if elem == l2[i]:
+            if l1 == l2[i : ] + l2[ : i]:
+                return True
+            return False
+    return False
+
+def sublistExists(list1, list2):
+    str_l1 = str(list1).strip("[]")
+    str_l2 = str(list2).strip("[]")
+    return str_l1 in str_l2
+
+
+
+
+
+gc = rep_.GaussCode('1-a,2+a,3-c,4+c,5-a,6+a,2-a,1+a,7-a,5+a,6-a,7+a,4-c,3+c')
+
+
+rep = rep_.Representation(gc)
+
+k = rep.space_curve(bool=False)
+
+#k.plot()
+
+[graph, duplicates, heights, first_edge]  = k.planar_diagram().as_networkx()
+
+print(first_edge)
+
+
+pos = nx.planar_layout(graph)
+
+# subax1 = plt.subplot(121)
+
+(check, plane_graph_7_6) = nx.check_planarity(graph)
+
+
+print(check)
+print(plane_graph_7_6)
+print(graph)
+
+plane_graph_7_6_embedded = nx.PlanarEmbedding(plane_graph_7_6)
+
+#print(plane_graph_7_6_embedded.get_edge_data(0, 3))
+
+#nx.draw(graph, pos, with_labels=True, font_weight='bold')
+
+
+subax2 = plt.subplot(121)
+
+nx.draw(plane_graph_7_6_embedded, pos, node_color = 'r', with_labels=True)
+
+# plt.show()
+
+#print(plane_graph_7_6[0])
+
+faces_list = []
+
+for node_1 in plane_graph_7_6_embedded.nodes():
+    for node_2 in plane_graph_7_6_embedded.nodes():
+        if node_2 not in plane_graph_7_6[node_1]:
+           continue
+        faces_list.append(plane_graph_7_6_embedded.traverse_face(node_1, node_2))
+
+
+# print(faces_list)
+# print("----------------------------")
+        
+
+# for node_1 in plane_graph_7_6_embedded.nodes():
+#     for node_2 in plane_graph_7_6_embedded.nodes():
+#         print(node_1)
+#         print(node_2)
+#         if node_2 not in plane_graph_7_6[node_1]:
+#             print("-----------------------------")
+#             continue
+#         print(plane_graph_7_6_embedded.traverse_face(node_1, node_2))
+#         print("-----------------------------")
+
+i = 0
+while i < len(faces_list):
+    j = i + 1
+    while j < len(faces_list):
+        if is_cyclic_list(faces_list[i], faces_list[j]):
+            faces_list.remove(faces_list[j])
+            j = j - 1
+        j =  j + 1
+    i = i + 1
+
+
+print(faces_list)
+
+nodes = faces_list
+edges = []
+
+for node in nodes:
+    for next_node in nodes:
+        if node != next_node:
+            for i in range(0, len(node)-1):
+                subset = node[i:i+2] 
+                if sublistExists(subset, next_node):
+                    edges.append([node, next_node])
+                
+            subset = node[len(node)-1:] + node[:1]  
+            if sublistExists(subset, next_node):
+                    edges.append([node, next_node])
+            
+            node_reveresd = node[::-1]
+            for i in range(0, len(node)-1):
+                subset = node_reveresd[i:i+2] 
+                if sublistExists(subset, next_node):
+                    edges.append([node, next_node])
+            subset = node_reveresd[len(node)-1:] + node_reveresd[:1]
+            if sublistExists(subset, next_node):
+                    edges.append([node, next_node])
+
+print("----------------------------")
+print(nodes)
+print(edges)
+
+# edges_str = []
+
+# for edge in edges:
+#     edges_str.append((str(edge[0]).strip("[]"), str(edge[1]).strip("[]")))
+
+# print(sublistExists([2,4], [2,4,6]))
+
+# di_dual_graph = nx.DiGraph(edges_str)
+
+# dual_graph = di_dual_graph.to_undirected()
+
+# subax2 = plt.subplot(122)
+
+# pos_1 = nx.planar_layout(dual_graph)
+
+# nx.draw(dual_graph, pos_1, with_labels = True,  font_weight='bold')
+
+# A = to_agraph(dual_graph) 
+                                                                
+# A.draw('multigraph_example.png', prog = 'dot')
+
+plt.show()
+
+
+
+
+
+
+
+
+

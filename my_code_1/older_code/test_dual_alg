@@ -1,0 +1,171 @@
+
+
+import networkx as nx
+import matplotlib.pyplot as plt
+from networkx.drawing.nx_agraph import to_agraph
+import sys
+import my_helpers as help
+
+
+
+
+f_graph = nx.MultiGraph([(0,1),(0,1),(2,0),(2,1),(2,3),(2,3),(1,3),(0,3)])
+
+subax2 = plt.subplot(121)
+
+pos = nx.planar_layout(f_graph)
+
+(check, graph) = nx.check_planarity(f_graph)
+
+nx.draw(f_graph, pos, node_color = 'r', with_labels=True)
+
+
+faces_list = []
+
+
+print(graph.edges)
+
+for node_1 in graph.nodes():
+    for node_2 in graph.nodes():
+        if node_2 not in graph[node_1]:
+           continue
+        faces_list.append(graph.traverse_face(node_1, node_2))
+
+
+i = 0
+while i < len(faces_list):
+    j = i + 1
+    while j < len(faces_list):
+        if help.is_cyclic_list(faces_list[i], faces_list[j]):
+            faces_list.remove(faces_list[j])
+            j = j - 1
+        j =  j + 1
+    i = i + 1
+print(faces_list)
+print("----------------")
+
+edges = f_graph.edges()
+edge_count = {}
+for e in edges:
+    e_str = str(e).strip("()").replace(", ", "")
+    rev_e_str = e_str[::-1]
+    if e_str not in edge_count and rev_e_str not in edge_count:
+        edge_count[e_str] = 1
+    elif e_str in edge_count:
+        edge_count[e_str] += 1
+    else:
+        edge_count[rev_e_str] += 1
+for e in edge_count:
+    if edge_count[e] > 1:
+        face = [int(e[0:1]), int(e[1:])]
+    for i in range(0, edge_count[e] - 1):
+        faces_list.append(face)
+print(faces_list)
+print(type(faces_list[4][0]))
+
+
+
+# nodes = []
+# for i in range(len(faces_list)):
+#     nodes.append(str(faces_list[i]).strip("[]").replace(", ", ""))
+
+# edges = []
+
+# print(nodes)
+
+# for node in nodes:
+#     for next_node in nodes:
+#         if node != next_node:
+#             print(node)
+#             print("$$$$$$$$$$$$$$$")
+#             for i in range(0, len(node)-1):
+#                 subset = node[i:i+2]
+#                 rev_subset = subset[::-1]
+#                 print(subset)
+#                 print(rev_subset)
+#                 print("next" + next_node) 
+#                 if sublistExists(subset, next_node):
+#                     edges.append([node, next_node])
+#                     print(edges)
+#                 if sublistExists(rev_subset, next_node):
+#                     edges.append([node, next_node])
+#                     print(edges)    
+#             subset = node[len(node)-1:] + node[:1]
+#             rev_subset = subset[::-1]
+#             print(subset)
+#             print(rev_subset)
+#             print("next" + next_node) 
+#             if sublistExists(subset, next_node):
+#                     edges.append([node, next_node])
+#                     print(edges)
+#             if sublistExists(rev_subset, next_node):
+#                     edges.append([node, next_node])
+#                     print(edges)
+#             print("***************************")
+
+# for i in range(0,len(nodes)):
+#     for j in range(i+1, len(nodes)):
+#         subsets = help.edges_set_dual_creation(nodes[i])
+#         for subset in subsets:
+#             rev_next_node = nodes[j][::-1]
+#             x = nodes[i]
+#             y = nodes[j]
+#             if help.sublistExists(subset, nodes[j]) :
+#                 edges.append((nodes[i], nodes[j]))
+#             if help.sublistExists(subset, rev_next_node):
+#                 edges.append((nodes[i], nodes[j]))
+#             last_edge = nodes[j][len(nodes[j])-1:] + nodes[j][:1]
+#             last_edge_rev = last_edge[::-1]
+#             if help.sublistExists(subset, last_edge):
+#                 edges.append((nodes[i], nodes[j]))
+#             if help.sublistExists(subset, last_edge_rev):
+#                 edges.append((nodes[i], nodes[j]))
+            
+
+
+# edges_str = []
+
+# for edge in edges:
+#     edges_str.append((str(edge[0]).strip("[]"), str(edge[1]).strip("[]")))
+
+# print(edges_str)    
+
+
+# dual_graph = nx.MultiGraph()
+
+# i = 1
+# for edge in edges:
+#     dual_graph.add_edge(*edge)
+
+# subax2 = plt.subplot(122)
+
+# pos_1 = nx.random_layout(dual_graph)
+
+
+# print(nodes)
+# print(edges)
+
+# print(dual_graph.edges())
+
+# A = to_agraph(dual_graph)
+
+
+# A.draw("pyknotid_helali/my_code_1/images/test.png", prog='dot')
+
+
+
+# l_g = nx.line_graph(graph)
+
+# print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
+# print(l_g.nodes())
+# print(l_g.edges())
+
+# subax1 = plt.subplot(122)
+
+# nx.draw(l_g, with_labels=True)
+
+
+# plt.show()
+
+
+
