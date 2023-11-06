@@ -3,7 +3,7 @@ Preform Reidemeister moves on Signed Planar Graphs
 Please read the PDF file "Report" for more details.
 
 # Summary
-n this report, we present our program dealing with Reidemeister moves on alternating knot di-
+We present our program dealing with Reidemeister moves on alternating knot di-
 agrams and their signed planar graphs. We highlight theorems (1) and (2) as they provide the
 basis for our approach. We developed our program to take as input knot diagrams represented as a
 Gauss codes, one of them is a reducible knot diagram, the program then derives their signed planar
