@@ -1,5 +1,5 @@
 # reidemeister_planar_graphs
-Preform Reidemeister moves on Signed Planar Graphs
+Preform Reidemeister moves on Signed Planar Graphs.
 Please read the PDF file "Report" for more details.
 
 # Summary
